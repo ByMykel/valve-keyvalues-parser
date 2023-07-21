@@ -1,51 +1,16 @@
 <script setup lang="ts">
-import * as vdf from '@node-steam/vdf';
-import * as vdfParser from 'vdf-parser';
-import { ref } from 'vue';
 import {
   Listbox,
   ListboxButton,
   ListboxOptions,
   ListboxOption,
-} from '@headlessui/vue';
+} from '@headlessui/vue'
 
-import { CheckIcon } from '@heroicons/vue/20/solid';
-import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
+import { CheckIcon } from '@heroicons/vue/20/solid'
+import { ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { useValveDataFormat } from './composables/useValveDataFormat'
 
-const originalText = ref('');
-const vdfText = ref('');
-
-const parse = () => {
-  switch (selectedPerson.value.name) {
-    case '@node-steam/vdf':
-      vdfText.value = vdf.parse(originalText.value);
-      break;
-    case 'vdf-parser':
-      vdfText.value = vdfParser.parse(originalText.value);
-      break;
-  }
-
-  console.log(selectedPerson.value.name)
-  console.log(vdfText.value);
-  
-  vdfText.value = JSON.stringify(vdfText.value, null, 4);
-};
-
-const people = [
-  {
-    id: 1,
-    name: '@node-steam/vdf',
-    npm: 'https://www.npmjs.com/package/@node-steam/vdf',
-    github: 'https://github.com/node-steam/vdf',
-  },
-  {
-    id: 2,
-    name: 'vdf-parser',
-    npm: 'https://www.npmjs.com/package/vdf-parser',
-    github: 'https://github.com/p0358/vdf-parser',
-  },
-];
-const selectedPerson = ref(people[0]);
+const { input, output, parse, options, selectedOption } = useValveDataFormat()
 </script>
 
 <template>
@@ -54,12 +19,12 @@ const selectedPerson = ref(people[0]);
       <h1 class="text-xl font-medium">Valve KeyValues Parser</h1>
       <div class="flex gap-2">
         <div class="flex gap-4 p-0.5 bg-gray-200 rounded-md">
-          <Listbox v-model="selectedPerson">
+          <Listbox v-model="selectedOption">
             <div class="relative w-[14rem]">
               <ListboxButton
                 class="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-200 rounded-md shadow-sm cursor-default focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm"
               >
-                <span class="block truncate">{{ selectedPerson.name }}</span>
+                <span class="block truncate">{{ selectedOption.name }}</span>
                 <span
                   class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
                 >
@@ -79,10 +44,10 @@ const selectedPerson = ref(people[0]);
                   class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 >
                   <ListboxOption
+                    v-for="option in options"
                     v-slot="{ active, selected }"
-                    v-for="person in people"
-                    :key="person.name"
-                    :value="person"
+                    :key="option.name"
+                    :value="option"
                     as="template"
                   >
                     <li
@@ -96,7 +61,7 @@ const selectedPerson = ref(people[0]);
                           selected ? 'font-medium' : 'font-normal',
                           'block truncate',
                         ]"
-                        >{{ person.name }}</span
+                        >{{ option.name }}</span
                       >
                       <span
                         v-if="selected"
@@ -112,7 +77,7 @@ const selectedPerson = ref(people[0]);
           </Listbox>
           <div class="flex items-center gap-1 px-1">
             <a
-              :href="selectedPerson.npm"
+              :href="selectedOption.npm"
               class="p-1 rounded-md hover:bg-gray-300"
               target="_blank"
             >
@@ -141,7 +106,7 @@ const selectedPerson = ref(people[0]);
               </svg>
             </a>
             <a
-              :href="selectedPerson.github"
+              :href="selectedOption.github"
               class="p-1 rounded-md hover:bg-gray-300"
               target="_blank"
             >
@@ -183,21 +148,15 @@ const selectedPerson = ref(people[0]);
     </div>
     <div class="grid grid-cols-2 gap-6">
       <textarea
+        id="vdf-text"
+        v-model="input"
         class="border border-gray-200 rounded-md h-[85vh] outline-none focus:outline-blue-400"
         name="vdf-text"
-        id="vdf-text"
-        v-model="originalText"
       ></textarea>
-      <!-- <textarea
-        class="border border-gray-200 rounded-md h-[85vh] outline-none focus:outline-blue-400"
-        name="readable-text"
-        id="readable-text"
-        v-model="vdfText"
-      ></textarea> -->
       <pre
         tabindex="0"
         class="border border-gray-200 bg-white rounded-md h-[85vh] outline-none focus:outline-blue-400 p-4 overflow-auto"
-        >{{ vdfText }}</pre
+        >{{ output }}</pre
       >
     </div>
   </div>
