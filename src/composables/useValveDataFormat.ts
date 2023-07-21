@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
-import * as vdf from '@node-steam/vdf'
-import * as vdfParser from 'vdf-parser'
+import { parse as parse1 } from '@node-steam/vdf'
+import { parse as parse2 } from 'vdf-parser'
 
 interface Option {
   name: string
@@ -31,10 +31,10 @@ export function useValveDataFormat() {
   function parse() {
     switch (selectedOption.value.name) {
       case '@node-steam/vdf':
-        output.value = vdf.parse(input.value)
+        output.value = parse1(input.value)
         break
       case 'vdf-parser':
-        output.value = vdfParser.parse(input.value)
+        output.value = parse2(input.value)
         break
       default:
         throw new Error(
