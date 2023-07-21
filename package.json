@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.12",
-    "@heroicons/vue": "^2.0.17",
+    "@heroicons/vue": "^2.0.18",
     "@node-steam/vdf": "^2.2.0",
     "vdf-parser": "^1.2.1",
     "vue": "^3.2.47"
