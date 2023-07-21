@@ -14,6 +14,7 @@
     "@headlessui/vue": "^1.7.12",
     "@heroicons/vue": "^2.0.17",
     "@node-steam/vdf": "^2.2.0",
+    "kvparser": "^1.0.1",
     "vdf-parser": "^1.2.1",
     "vue": "^3.2.47"
   },
