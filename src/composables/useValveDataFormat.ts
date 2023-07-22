@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 import { parse as parse1 } from '@node-steam/vdf'
 import { parse as parse2 } from 'vdf-parser'
+// @ts-ignore
 import { parse as parse3 } from 'kvparser'
 
 interface Option {
