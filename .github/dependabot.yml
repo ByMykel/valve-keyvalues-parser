@@ -7,3 +7,4 @@ updates:
     allow:
       - dependency-name: '@node-steam/vdf'
       - dependency-name: 'vdf-parser'
+      - dependency-name: 'kvparser'

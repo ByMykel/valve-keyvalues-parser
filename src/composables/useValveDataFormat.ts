@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 import { parse as parse1 } from '@node-steam/vdf'
 import { parse as parse2 } from 'vdf-parser'
+import { parse as parse3 } from 'kvparser'
 
 interface Option {
   name: string
@@ -20,6 +21,11 @@ const options: Option[] = [
     npm: 'https://www.npmjs.com/package/vdf-parser',
     github: 'https://github.com/p0358/vdf-parser',
   },
+  {
+    name: 'kvparser',
+    npm: 'https://www.npmjs.com/package/kvparser',
+    github: 'https://github.com/DoctorMcKay/node-kvparser',
+  },
 ]
 
 export function useValveDataFormat() {
@@ -35,6 +41,9 @@ export function useValveDataFormat() {
         break
       case 'vdf-parser':
         output.value = parse2(input.value)
+        break
+      case 'kvparser':
+        output.value = parse3(input.value)
         break
       default:
         throw new Error(
