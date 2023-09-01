@@ -9,6 +9,7 @@ interface Option {
   name: string
   npm: string
   github: string
+  parse: Function
 }
 
 const options: Option[] = [
@@ -16,48 +17,51 @@ const options: Option[] = [
     name: '@node-steam/vdf',
     npm: 'https://www.npmjs.com/package/@node-steam/vdf',
     github: 'https://github.com/node-steam/vdf',
+    parse: parse1,
   },
   {
     name: 'vdf-parser',
     npm: 'https://www.npmjs.com/package/vdf-parser',
     github: 'https://github.com/p0358/vdf-parser',
+    parse: parse2,
   },
   {
     name: 'kvparser',
     npm: 'https://www.npmjs.com/package/kvparser',
     github: 'https://github.com/DoctorMcKay/node-kvparser',
+    parse: parse3,
   },
 ]
 
 export function useValveDataFormat() {
-  const input = ref('')
-  const output = ref('')
+  const input = ref<string>('')
+  const output = ref<string>('')
+  const error = ref<string>('')
 
   const selectedOption = ref(options[0])
 
   function parse() {
-    switch (selectedOption.value.name) {
-      case '@node-steam/vdf':
-        output.value = parse1(input.value)
-        break
-      case 'vdf-parser':
-        output.value = parse2(input.value)
-        break
-      case 'kvparser':
-        output.value = parse3(input.value)
-        break
-      default:
-        throw new Error(
-          `Unexpected option ${selectedOption.value.name} when parsing`,
-        )
+    const option = options.find((o) => o.name === selectedOption.value.name)
+
+    if (!option) {
+      throw new Error(
+        `Unexpected option ${selectedOption.value.name} when parsing`,
+      )
     }
 
-    output.value = JSON.stringify(output.value, null, 4)
+    try {
+      output.value = option.parse(input.value)
+      output.value = JSON.stringify(output.value, null, 4)
+    } catch (err: unknown) {
+      error.value =
+        err instanceof Error ? err.message : 'Unknown error while parsing'
+    }
   }
 
   return {
     input,
     output,
+    error,
     parse,
     options,
     selectedOption,
