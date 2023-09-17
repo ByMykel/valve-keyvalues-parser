@@ -2,9 +2,15 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'prettier'],
+  extends: [
+    'plugin:vue/strongly-recommended',
+    'eslint:recommended',
+    '@vue/typescript/recommended',
+    'prettier',
+  ],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    // override/add rules settings here, such as:
-    // 'vue/no-unused-vars': 'error'
+    'prettier/prettier': 'error',
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
 }
