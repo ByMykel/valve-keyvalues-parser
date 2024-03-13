@@ -1,20 +1,20 @@
 name: GitHub Pages deploy
 
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v3
-      - run: npm install && npm run build
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist
+        steps:
+            - uses: actions/checkout@master
+            - uses: actions/setup-node@v3
+            - run: npm install && npm run build
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@4.1.0
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  BRANCH: gh-pages
+                  FOLDER: dist

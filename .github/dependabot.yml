@@ -1,10 +1,10 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/' # Location of package manifests
-    schedule:
-      interval: 'daily'
-    allow:
-      - dependency-name: '@node-steam/vdf'
-      - dependency-name: 'vdf-parser'
-      - dependency-name: 'kvparser'
+    - package-ecosystem: "npm"
+      directory: "/" # Location of package manifests
+      schedule:
+          interval: "daily"
+      allow:
+          - dependency-name: "@node-steam/vdf"
+          - dependency-name: "vdf-parser"
+          - dependency-name: "kvparser"
