@@ -31,6 +31,7 @@ function updateOption(option: Option) {
 <template>
     <Listbox
         class="z-50"
+        :model-value="selectedOption"
         @update:model-value="updateOption"
     >
         <div class="relative w-[14rem]">
