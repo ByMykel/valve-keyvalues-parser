@@ -73,7 +73,7 @@ function modeChanged() {
                             target="_blank"
                         >
                             <svg
-                                class="w-7 h-7 hover:text-blue-500"
+                                class="text-gray-500 w-7 h-7 hover:text-blue-500"
                                 width="24"
                                 height="24"
                                 stroke-width="1.5"
