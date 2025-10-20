@@ -3,7 +3,7 @@ updates:
     - package-ecosystem: "npm"
       directory: "/" # Location of package manifests
       schedule:
-          interval: "monthly"
+          interval: "daily"
       allow:
           - dependency-name: "@node-steam/vdf"
           - dependency-name: "vdf-parser"
