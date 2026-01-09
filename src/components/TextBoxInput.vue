@@ -26,7 +26,8 @@ function textChanged(e: Event) {
     <textarea
         ref="textarea"
         :value="input"
-        class="w-full min-h-screen p-4 overflow-y-hidden align-top outline-none resize-none"
+        class="w-full h-full p-4 align-top outline-none resize-none bg-transparent text-bento-text font-mono text-sm leading-relaxed placeholder:text-bento-textMuted/50 caret-bento-accent selection:bg-bento-accent/20"
+        placeholder="Paste your KeyValues or JSON data here..."
         @input="textChanged"
     ></textarea>
 </template>

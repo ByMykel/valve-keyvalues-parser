@@ -34,28 +34,31 @@ function updateOption(option: Option) {
         :model-value="selectedOption"
         @update:model-value="updateOption"
     >
-        <div class="relative w-[14rem]">
+        <div class="relative w-[10rem] md:w-[14rem]">
             <ListboxButton
-                class="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-200 rounded-md shadow-sm cursor-default focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm"
+                class="relative w-full h-10 py-2 pl-4 pr-10 text-left transition-all duration-200 border rounded-xl cursor-pointer bg-bento-bg border-bento-border text-bento-text hover:border-bento-borderHover focus:outline-none focus:border-bento-accent focus:ring-2 focus:ring-bento-accent/20 text-sm"
             >
                 <span class="block truncate">{{ selectedOption.name }}</span>
                 <span
-                    class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
                 >
                     <ChevronUpDownIcon
-                        class="w-5 h-5 text-gray-400"
+                        class="w-4 h-4 text-bento-textMuted"
                         aria-hidden="true"
                     />
                 </span>
             </ListboxButton>
 
             <transition
+                enter-active-class="transition duration-150 ease-out"
+                enter-from-class="opacity-0 translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
                 leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 translate-y-1"
             >
                 <ListboxOptions
-                    class="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute w-full py-2 mt-2 overflow-auto border rounded-2xl shadow-bento bg-bento-card max-h-60 border-bento-border focus:outline-none text-sm"
                 >
                     <ListboxOption
                         v-for="option in options"
@@ -67,9 +70,10 @@ function updateOption(option: Option) {
                         <li
                             :class="[
                                 active
-                                    ? 'bg-blue-100 text-blue-900'
-                                    : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-10 pr-4'
+                                    ? 'bg-bento-bg text-bento-text'
+                                    : 'text-bento-textMuted',
+                                selected ? 'text-bento-text' : '',
+                                'relative cursor-pointer select-none py-2.5 pl-10 pr-4 transition-colors duration-150 mx-1 rounded-xl'
                             ]"
                         >
                             <span
@@ -81,10 +85,10 @@ function updateOption(option: Option) {
                             >
                             <span
                                 v-if="selected"
-                                class="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600"
+                                class="absolute inset-y-0 left-0 flex items-center pl-3 text-bento-accent"
                             >
                                 <CheckIcon
-                                    class="w-5 h-5"
+                                    class="w-4 h-4"
                                     aria-hidden="true"
                                 />
                             </span>

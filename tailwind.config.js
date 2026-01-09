@@ -22,7 +22,38 @@ module.exports = {
         },
         extend: {
             fontFamily: {
-                sans: ["Inter var", ...defaultTheme.fontFamily.sans]
+                sans: ["Inter", ...defaultTheme.fontFamily.sans],
+                mono: [
+                    "JetBrains Mono",
+                    "Fira Code",
+                    ...defaultTheme.fontFamily.mono
+                ]
+            },
+            colors: {
+                bento: {
+                    bg: "rgb(var(--bento-bg) / <alpha-value>)",
+                    card: "rgb(var(--bento-card) / <alpha-value>)",
+                    cardHover: "rgb(var(--bento-card-hover) / <alpha-value>)",
+                    border: "rgb(var(--bento-border) / <alpha-value>)",
+                    borderHover:
+                        "rgb(var(--bento-border-hover) / <alpha-value>)",
+                    accent: "rgb(var(--bento-accent) / <alpha-value>)",
+                    accentLight:
+                        "rgb(var(--bento-accent-light) / <alpha-value>)",
+                    text: "rgb(var(--bento-text) / <alpha-value>)",
+                    textMuted: "rgb(var(--bento-text-muted) / <alpha-value>)",
+                    success: "rgb(var(--bento-success) / <alpha-value>)",
+                    error: "rgb(var(--bento-error) / <alpha-value>)",
+                    warning: "rgb(var(--bento-warning) / <alpha-value>)"
+                }
+            },
+            borderRadius: {
+                "4xl": "2rem",
+                "5xl": "2.5rem"
+            },
+            boxShadow: {
+                bento: "var(--bento-shadow)",
+                "bento-hover": "var(--bento-shadow-hover)"
             },
             keyframes: {
                 "accordion-down": {
