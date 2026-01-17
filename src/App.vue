@@ -81,43 +81,11 @@ function downloadOutput() {
 <template>
     <!-- Mobile: scrollable page / Desktop: fixed viewport -->
     <div
-        class="min-h-screen lg:h-screen flex flex-col p-3 md:p-4 bg-bento-bg lg:overflow-hidden"
+        class="min-h-screen lg:h-screen flex flex-col bg-bento-bg lg:overflow-hidden"
     >
         <!-- Header Bar (compact on mobile) -->
-        <div class="bento-card p-3 md:p-4 mb-3 md:mb-4 shrink-0">
+        <div class="bento-card p-3 md:p-4 shrink-0">
             <div class="flex flex-wrap items-center justify-between gap-3">
-                <!-- Logo & Title -->
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-bento-accent to-purple-600 flex items-center justify-center shrink-0"
-                    >
-                        <svg
-                            class="w-4 h-4 md:w-5 md:h-5 text-white"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
-                    </div>
-                    <div class="hidden sm:block">
-                        <h1
-                            class="text-base md:text-lg font-bold text-bento-text"
-                        >
-                            KeyValues Parser
-                        </h1>
-                        <p class="text-xs text-bento-textMuted">
-                            Valve VDF Format Tool
-                        </p>
-                    </div>
-                </div>
-
                 <!-- Controls -->
                 <div class="flex flex-wrap items-center gap-2 md:gap-4">
                     <OptionList
@@ -264,9 +232,7 @@ function downloadOutput() {
         </div>
 
         <!-- Editor Panels -->
-        <div
-            class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 min-h-0"
-        >
+        <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 min-h-0">
             <!-- Input Card -->
             <div
                 class="bento-card p-0 overflow-hidden flex flex-col min-h-[280px] md:min-h-[350px] lg:min-h-0"
@@ -275,17 +241,6 @@ function downloadOutput() {
                     class="h-11 md:h-12 px-3 md:px-4 border-b border-bento-border flex items-center justify-between shrink-0"
                 >
                     <div class="flex items-center gap-2 md:gap-3">
-                        <div class="flex gap-1.5">
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-error/60"
-                            ></div>
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-warning/60"
-                            ></div>
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-success/60"
-                            ></div>
-                        </div>
                         <span class="text-sm font-medium text-bento-text"
                             >Input</span
                         >
@@ -347,17 +302,6 @@ function downloadOutput() {
                     class="h-11 md:h-12 px-3 md:px-4 border-b border-bento-border flex items-center justify-between shrink-0"
                 >
                     <div class="flex items-center gap-2 md:gap-3">
-                        <div class="flex gap-1.5">
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-error/60"
-                            ></div>
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-warning/60"
-                            ></div>
-                            <div
-                                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bento-success/60"
-                            ></div>
-                        </div>
                         <span class="text-sm font-medium text-bento-text"
                             >Output</span
                         >
@@ -440,6 +384,6 @@ function downloadOutput() {
 
 <style scoped>
 .bento-card {
-    @apply bg-bento-card rounded-2xl md:rounded-3xl border border-bento-border shadow-bento;
+    @apply bg-bento-card border border-bento-border;
 }
 </style>

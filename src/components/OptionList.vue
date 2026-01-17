@@ -58,7 +58,7 @@ function updateOption(option: Option) {
                 leave-to-class="opacity-0 translate-y-1"
             >
                 <ListboxOptions
-                    class="absolute w-full py-2 mt-2 overflow-auto border rounded-2xl shadow-bento bg-bento-card max-h-60 border-bento-border focus:outline-none text-sm"
+                    class="absolute w-full py-2 mt-2 overflow-auto border rounded-2xl bg-bento-card max-h-60 border-bento-border focus:outline-none text-sm"
                 >
                     <ListboxOption
                         v-for="option in options"
