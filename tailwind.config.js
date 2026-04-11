@@ -1,4 +1,3 @@
-const animate = require("tailwindcss-animate")
 const defaultTheme = require("tailwindcss/defaultTheme")
 
 /** @type {import('tailwindcss').Config} */
@@ -71,5 +70,5 @@ module.exports = {
             }
         }
     },
-    plugins: [animate]
+    plugins: []
 }

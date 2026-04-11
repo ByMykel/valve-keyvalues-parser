@@ -16,10 +16,10 @@
         --bento-success: 34 197 94;
         --bento-error: 239 68 68;
         --bento-warning: 245 158 11;
-        --bento-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
-            0 4px 12px rgba(0, 0, 0, 0.05);
-        --bento-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.1),
-            0 8px 24px rgba(0, 0, 0, 0.08);
+        --bento-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+        --bento-shadow-hover:
+            0 2px 8px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
     .dark {
@@ -35,9 +35,11 @@
         --bento-success: 34 197 94;
         --bento-error: 239 68 68;
         --bento-warning: 245 158 11;
-        --bento-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05),
+        --bento-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.05),
             0 20px 50px -12px rgba(0, 0, 0, 0.5);
-        --bento-shadow-hover: 0 0 0 1px rgba(255, 255, 255, 0.1),
+        --bento-shadow-hover:
+            0 0 0 1px rgba(255, 255, 255, 0.1),
             0 25px 60px -12px rgba(0, 0, 0, 0.6);
     }
 

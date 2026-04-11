@@ -1,54 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue"
-import { useDebounceFn } from "@vueuse/core"
+import { ref, onMounted } from "vue"
 
 import { useValveDataFormat } from "./composables/useValveDataFormat"
-
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import TextBoxInput from "./components/TextBoxInput.vue"
 import TextBoxOutput from "./components/TextBoxOutput.vue"
 import OptionList from "./components/OptionList.vue"
 
-import { PARSE_MODE, STRINGIFY_MODE } from "./constants"
-
-const { input, output, error, selectedOption, convert, switchMode } =
+const { mode, input, output, error, selectedOption, convert } =
     useValveDataFormat()
 
 const textarea = ref<InstanceType<typeof TextBoxInput> | null>(null)
 const copied = ref(false)
-const isDark = ref(true)
 
 onMounted(() => {
-    const saved = localStorage.getItem("theme")
-    if (saved) {
-        isDark.value = saved === "dark"
-    } else {
-        isDark.value = window.matchMedia("(prefers-color-scheme: dark)").matches
-    }
-    applyTheme()
+    document.documentElement.classList.add("dark")
 })
 
-watch(isDark, () => {
-    applyTheme()
-    localStorage.setItem("theme", isDark.value ? "dark" : "light")
-})
-
-function applyTheme() {
-    document.documentElement.classList.toggle("dark", isDark.value)
-}
-
-function toggleTheme() {
-    isDark.value = !isDark.value
-}
-
-const debouncedConversion = useDebounceFn(() => {
-    convert()
-}, 200)
-
-function modeChanged() {
-    switchMode()
-    debouncedConversion()
+let debounceTimer: ReturnType<typeof setTimeout>
+function debouncedConversion() {
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => convert(), 200)
 }
 
 async function copyOutput() {
@@ -79,158 +51,9 @@ function downloadOutput() {
 </script>
 
 <template>
-    <!-- Mobile: scrollable page / Desktop: fixed viewport -->
     <div
         class="min-h-screen lg:h-screen flex flex-col bg-bento-bg lg:overflow-hidden"
     >
-        <!-- Header Bar (compact on mobile) -->
-        <div class="bento-card p-3 md:p-4 shrink-0">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <!-- Controls -->
-                <div class="flex flex-wrap items-center gap-2 md:gap-4">
-                    <OptionList
-                        :selected-option="selectedOption"
-                        @update:selected-option="selectedOption = $event"
-                        @debounced-conversion="debouncedConversion"
-                    />
-                    <Tabs
-                        :default-value="PARSE_MODE"
-                        @update:modelValue="modeChanged"
-                    >
-                        <TabsList>
-                            <TabsTrigger :value="PARSE_MODE">{{
-                                PARSE_MODE
-                            }}</TabsTrigger>
-                            <TabsTrigger :value="STRINGIFY_MODE">{{
-                                STRINGIFY_MODE
-                            }}</TabsTrigger>
-                        </TabsList>
-                    </Tabs>
-                </div>
-
-                <!-- Status, Theme Toggle & GitHub -->
-                <div class="flex items-center gap-2 md:gap-3">
-                    <div class="flex items-center gap-2">
-                        <div
-                            class="w-2 h-2 rounded-full"
-                            :class="
-                                error ? 'bg-bento-error' : 'bg-bento-success'
-                            "
-                        ></div>
-                        <span
-                            class="text-xs md:text-sm text-bento-textMuted hidden sm:inline"
-                        >
-                            {{ error ? "Error" : "Ready" }}
-                        </span>
-                    </div>
-                    <button
-                        @click="toggleTheme"
-                        class="p-1.5 rounded-lg text-bento-textMuted hover:text-bento-text hover:bg-bento-bg transition-all"
-                        :title="
-                            isDark
-                                ? 'Switch to light mode'
-                                : 'Switch to dark mode'
-                        "
-                    >
-                        <!-- Sun icon (shown in dark mode) -->
-                        <svg
-                            v-if="isDark"
-                            class="w-5 h-5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="5"
-                            ></circle>
-                            <line
-                                x1="12"
-                                y1="1"
-                                x2="12"
-                                y2="3"
-                            ></line>
-                            <line
-                                x1="12"
-                                y1="21"
-                                x2="12"
-                                y2="23"
-                            ></line>
-                            <line
-                                x1="4.22"
-                                y1="4.22"
-                                x2="5.64"
-                                y2="5.64"
-                            ></line>
-                            <line
-                                x1="18.36"
-                                y1="18.36"
-                                x2="19.78"
-                                y2="19.78"
-                            ></line>
-                            <line
-                                x1="1"
-                                y1="12"
-                                x2="3"
-                                y2="12"
-                            ></line>
-                            <line
-                                x1="21"
-                                y1="12"
-                                x2="23"
-                                y2="12"
-                            ></line>
-                            <line
-                                x1="4.22"
-                                y1="19.78"
-                                x2="5.64"
-                                y2="18.36"
-                            ></line>
-                            <line
-                                x1="18.36"
-                                y1="5.64"
-                                x2="19.78"
-                                y2="4.22"
-                            ></line>
-                        </svg>
-                        <!-- Moon icon (shown in light mode) -->
-                        <svg
-                            v-else
-                            class="w-5 h-5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-                            ></path>
-                        </svg>
-                    </button>
-                    <a
-                        href="https://github.com/ByMykel/valve-keyvalues-parser"
-                        target="_blank"
-                        class="p-1.5 rounded-lg text-bento-textMuted hover:text-bento-text hover:bg-bento-bg transition-all"
-                        title="View on GitHub"
-                    >
-                        <svg
-                            class="w-5 h-5"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
-                            />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
         <!-- Editor Panels -->
         <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 min-h-0">
             <!-- Input Card -->
@@ -378,6 +201,19 @@ function downloadOutput() {
                     />
                 </div>
             </div>
+        </div>
+
+        <!-- Floating bottom bar -->
+        <div
+            class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2 rounded-2xl bg-bento-card border border-bento-border shadow-lg"
+        >
+            <OptionList
+                :selected-option="selectedOption"
+                :mode="mode"
+                @update:selected-option="selectedOption = $event"
+                @update:mode="mode = $event"
+                @debounced-conversion="debouncedConversion"
+            />
         </div>
     </div>
 </template>

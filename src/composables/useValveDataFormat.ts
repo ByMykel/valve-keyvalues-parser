@@ -5,7 +5,7 @@ import { parse as parse2, stringify as stringify2 } from "vdf-parser"
 // @ts-ignore
 import { parse as parse3 } from "kvparser"
 
-import { PARSE_MODE, STRINGIFY_MODE } from "../constants"
+import { PARSE_MODE } from "../constants"
 import { Option } from "../types"
 
 const options: Option[] = [
@@ -93,10 +93,6 @@ export function useValveDataFormat() {
         }
     }
 
-    function switchMode() {
-        mode.value = mode.value === PARSE_MODE ? STRINGIFY_MODE : PARSE_MODE
-    }
-
     return {
         mode,
         input,
@@ -104,7 +100,6 @@ export function useValveDataFormat() {
         error,
         options,
         selectedOption,
-        convert,
-        switchMode
+        convert
     }
 }
