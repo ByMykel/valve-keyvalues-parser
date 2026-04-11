@@ -26,8 +26,34 @@ function textChanged(e: Event) {
     <textarea
         ref="textarea"
         :value="input"
-        class="w-full h-full p-4 align-top outline-none resize-none bg-transparent text-bento-text font-mono text-sm leading-relaxed placeholder:text-bento-textMuted/50 caret-bento-accent selection:bg-bento-accent/20"
+        class="editor-textarea"
         placeholder="Paste your KeyValues or JSON data here..."
         @input="textChanged"
     ></textarea>
 </template>
+
+<style scoped>
+.editor-textarea {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    vertical-align: top;
+    outline: none;
+    resize: none;
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.625;
+    border: none;
+    caret-color: var(--color-accent);
+}
+
+.editor-textarea::placeholder {
+    color: rgb(113 113 122 / 0.5);
+}
+
+.editor-textarea::selection {
+    background-color: rgb(79 70 229 / 0.2);
+}
+</style>

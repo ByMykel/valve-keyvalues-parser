@@ -3,6 +3,8 @@ import { ref, onMounted, onUnmounted } from "vue"
 import { useValveDataFormat } from "../composables/useValveDataFormat"
 import { Option } from "../types"
 import { PARSE_MODE, STRINGIFY_MODE } from "../constants"
+import IconChevronUpDown from "./icons/IconChevronUpDown.vue"
+import IconCheck from "./icons/IconCheck.vue"
 
 const props = defineProps<{
     selectedOption: Option
@@ -45,143 +47,231 @@ onUnmounted(() => document.removeEventListener("click", onClickOutside))
 <template>
     <div
         ref="dropdownRef"
-        class="relative z-50"
+        class="dropdown"
     >
         <button
             @click="open = !open"
-            class="relative w-auto h-10 py-2 pl-4 pr-10 text-left transition-all duration-200 border rounded-xl cursor-pointer bg-bento-bg border-bento-border text-bento-text hover:border-bento-borderHover focus:outline-none focus:border-bento-accent focus:ring-2 focus:ring-bento-accent/20 text-sm whitespace-nowrap"
+            class="dropdown-trigger"
         >
-            <span class="block">
-                <span class="text-bento-textMuted">{{
+            <span class="dropdown-label">
+                <span class="dropdown-mode">{{
                     mode === PARSE_MODE ? "Parse" : "Stringify"
                 }}</span>
                 {{ selectedOption.name }}
             </span>
-            <span
-                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-            >
-                <svg
-                    class="w-4 h-4 text-bento-textMuted"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
+            <span class="dropdown-chevron">
+                <IconChevronUpDown class="icon-sm" />
             </span>
         </button>
 
         <transition
-            enter-active-class="transition duration-150 ease-out"
-            enter-from-class="opacity-0 translate-y-1"
-            enter-to-class="opacity-100 translate-y-0"
-            leave-active-class="transition duration-100 ease-in"
-            leave-from-class="opacity-100 translate-y-0"
-            leave-to-class="opacity-0 translate-y-1"
+            enter-active-class="dropdown-enter-active"
+            enter-from-class="dropdown-enter-from"
+            enter-to-class="dropdown-enter-to"
+            leave-active-class="dropdown-leave-active"
+            leave-from-class="dropdown-leave-from"
+            leave-to-class="dropdown-leave-to"
         >
             <ul
                 v-if="open"
-                class="absolute bottom-full mb-1 min-w-full w-max py-1 border rounded-xl bg-bento-card border-bento-border focus:outline-none text-sm"
+                class="dropdown-menu"
             >
-                <!-- Parse section -->
-                <li
-                    class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-bento-textMuted select-none text-center"
-                >
-                    Parse
-                </li>
+                <li class="dropdown-section-title">Parse</li>
                 <li
                     v-for="option in options"
                     :key="'parse-' + option.name"
                     @click="select(option, PARSE_MODE)"
-                    :class="[
-                        isSelected(option, PARSE_MODE)
-                            ? 'text-bento-text'
-                            : 'text-bento-textMuted',
-                        'relative cursor-pointer select-none py-1.5 pl-8 pr-3 transition-colors duration-150 mx-1 rounded-lg hover:bg-bento-bg hover:text-bento-text'
-                    ]"
+                    class="dropdown-item"
+                    :class="{ selected: isSelected(option, PARSE_MODE) }"
                 >
                     <span
-                        :class="[
-                            isSelected(option, PARSE_MODE)
-                                ? 'font-medium'
-                                : 'font-normal',
-                            'block truncate'
-                        ]"
+                        class="dropdown-item-text"
+                        :class="{
+                            'font-medium': isSelected(option, PARSE_MODE)
+                        }"
                     >
                         {{ option.name }}
                     </span>
                     <span
                         v-if="isSelected(option, PARSE_MODE)"
-                        class="absolute inset-y-0 left-0 flex items-center pl-2 text-bento-accent"
+                        class="dropdown-check"
                     >
-                        <svg
-                            class="w-4 h-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
+                        <IconCheck class="icon-sm" />
                     </span>
                 </li>
 
-                <!-- Divider -->
-                <li class="my-2 border-t border-bento-border"></li>
+                <li class="dropdown-divider"></li>
 
-                <!-- Stringify section -->
-                <li
-                    class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-bento-textMuted select-none text-center"
-                >
-                    Stringify
-                </li>
+                <li class="dropdown-section-title">Stringify</li>
                 <li
                     v-for="option in stringifyOptions"
                     :key="'stringify-' + option.name"
                     @click="select(option, STRINGIFY_MODE)"
-                    :class="[
-                        isSelected(option, STRINGIFY_MODE)
-                            ? 'text-bento-text'
-                            : 'text-bento-textMuted',
-                        'relative cursor-pointer select-none py-1.5 pl-8 pr-3 transition-colors duration-150 mx-1 rounded-lg hover:bg-bento-bg hover:text-bento-text'
-                    ]"
+                    class="dropdown-item"
+                    :class="{ selected: isSelected(option, STRINGIFY_MODE) }"
                 >
                     <span
-                        :class="[
-                            isSelected(option, STRINGIFY_MODE)
-                                ? 'font-medium'
-                                : 'font-normal',
-                            'block truncate'
-                        ]"
+                        class="dropdown-item-text"
+                        :class="{
+                            'font-medium': isSelected(option, STRINGIFY_MODE)
+                        }"
                     >
                         {{ option.name }}
                     </span>
                     <span
                         v-if="isSelected(option, STRINGIFY_MODE)"
-                        class="absolute inset-y-0 left-0 flex items-center pl-2 text-bento-accent"
+                        class="dropdown-check"
                     >
-                        <svg
-                            class="w-4 h-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
+                        <IconCheck class="icon-sm" />
                     </span>
                 </li>
             </ul>
         </transition>
     </div>
 </template>
+
+<style scoped>
+.dropdown {
+    position: relative;
+    z-index: 50;
+}
+
+.dropdown-trigger {
+    position: relative;
+    height: 40px;
+    padding: 8px 40px 8px 16px;
+    text-align: left;
+    transition: all 0.2s;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.dropdown-trigger:hover {
+    border-color: var(--color-border-hover);
+}
+
+.dropdown-trigger:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgb(79 70 229 / 0.2);
+}
+
+.dropdown-mode {
+    color: var(--color-text-muted);
+}
+
+.dropdown-chevron {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+    pointer-events: none;
+    color: var(--color-text-muted);
+}
+
+.icon-sm {
+    width: 16px;
+    height: 16px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 4px;
+    min-width: 100%;
+    width: max-content;
+    padding: 4px 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background-color: var(--color-card);
+    font-size: 0.875rem;
+    list-style: none;
+}
+
+.dropdown-section-title {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    user-select: none;
+    text-align: center;
+}
+
+.dropdown-item {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 12px 6px 32px;
+    transition: all 0.15s;
+    margin: 0 4px;
+    border-radius: 8px;
+    color: var(--color-text-muted);
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+.dropdown-item.selected {
+    color: var(--color-text);
+}
+
+.dropdown-item-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.dropdown-check {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    color: var(--color-accent);
+}
+
+.dropdown-divider {
+    margin: 8px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.dropdown-enter-active {
+    transition: all 0.15s ease-out;
+}
+
+.dropdown-leave-active {
+    transition: all 0.1s ease-in;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    opacity: 0;
+    transform: translateY(4px);
+}
+
+.dropdown-enter-to,
+.dropdown-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
